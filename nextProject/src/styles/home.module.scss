@@ -1,5 +1,5 @@
 @import 'variables';
-$color-primary: #1a6bd6;
+$color-primary: #f4c099;
 
 
 
@@ -20,6 +20,9 @@ $color-primary: #1a6bd6;
   @include responsive-title(50px);
   text-align: center;
   color: $color-primary;
+  font-weight: bold;
+  --font-family-primary: 'Roboto Mono', monospace;
+  --font-family-secondary: 'Rubik Mono One', sans-serif;
 }
 
 .body {
