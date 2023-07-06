@@ -1,7 +1,7 @@
 import '@styles/globals.scss'
 import home from '@styles/home.module.scss'
 import UploadForm from '@app/uploadForm'
-import Dropzone from '@app/Dropzone'
+import Dropzone from '@app/dropzone'
 //import React, { useState } from 'react';
 
 
