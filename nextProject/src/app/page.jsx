@@ -1,13 +1,18 @@
+import home from '@styles/home.module.scss'
+import UploadForm from '@app/uploadForm'
+//import React, { useState } from 'react';
+
+
 const Home = () => {
   return (
-    <section className="w-full flex-center flex-col">
-      <h1 className="text-4xl font-bold">HSC Pastpaper Wizard
-        <br className="hidden md:hidden" />
-
+    <section className="">
+      <h1 className={home.header}>HSC Pastpaper Wizard
+        <br className="" />
       </h1>
-      <p>
-        blah blah blah
-      </p>
+      <div className={home.body}>
+        <UploadForm/>
+      </div>
+
     </section>
   )
 }

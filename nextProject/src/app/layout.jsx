@@ -1,20 +1,15 @@
-import '@styles/globals.css'
-import Home from '@app/page'
-
+//server side rendering component
 export const metadata = { 
     title: 'HSC project',
     description: 'lol',
 }
 
-const RootLayout = () => {
+const RootLayout = ({children}) => {
     return (
-      <html Lang="en">
+      <html lang="en">
         <body>
-            <div className="main">
-                <div className="gradient" />
-            </div>
-            <main className="root">
-                <Home />
+            <main className="app">
+                {children}
             </main>
         </body>
     </html>
