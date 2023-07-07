@@ -50,4 +50,3 @@ function middleware(req) {
   // Call the Next.js handler
 }
 
-module.exports = middleware;
