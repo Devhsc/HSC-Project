@@ -21,7 +21,7 @@ const setUniqueUserTokenCookie = (res, token) => {
   return res;
 };
 
-function middleware(req) {
+export function middleware(req) {
   //console.log('request', req.nextUrl.pathname)
 
   // Only want to run this middleware if an API route is called (e.g., upload)
