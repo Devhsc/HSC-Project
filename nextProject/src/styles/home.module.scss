@@ -1,7 +1,4 @@
 @import 'variables';
-$color-primary: #f4c099;
-
-
 
 
 @mixin responsive-title($font-size) {
@@ -16,17 +13,27 @@ $color-primary: #f4c099;
   }
 }
 
-.header {
+.text {
   @include responsive-title(50px);
-  text-align: center;
   color: $color-primary;
   font-weight: bold;
   --font-family-primary: 'Roboto Mono', monospace;
   --font-family-secondary: 'Rubik Mono One', sans-serif;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, $gradient-color-a, $gradient-color-b);
 }
+
 
 .body {
     display: flex;
+    flex-direction: column;
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     height: 100vh;
@@ -35,3 +42,34 @@ $color-primary: #f4c099;
     margin: 10 auto; /* Center the body horizontally */
 
   }
+
+
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  opacity: 0.1;
+  background-image: linear-gradient(to right, $gradient-color-a, $gradient-color-b);
+}
+
+.gradientL {
+    background-image: linear-gradient(to right, rgba($gradient-color-a, $opacity-l), rgba($gradient-color-b, $opacity-l));
+    transition: background-image 0.3s ease-in-out;
+}
+
+.gradientM {
+  background-image: linear-gradient(to right, rgba($gradient-color-a, $opacity-m), rgba($gradient-color-b, $opacity-m));
+  transition: background-image 0.3s ease-in-out;
+}
+
+.gradientB {
+  background-image: linear-gradient(to right, rgba($gradient-color-a, $opacity-b), rgba($gradient-color-b, $opacity-b));
+  transition: background-image 0.3s ease-in-out;
+}
+
+.acceptedFiles {
+  min-height: 250px;
+}
