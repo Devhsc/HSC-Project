@@ -1,6 +1,6 @@
 const { NextRequest, NextResponse } = require('next/server');
 const { v4: uuidv4 } = require('uuid');
-const { serialize } = require('cookie');
+const { parse, serialize } = require('cookie');
 
 const createUniqueUserToken = () => {
   // Generate a unique user token using UUID version 4
@@ -10,7 +10,7 @@ const createUniqueUserToken = () => {
 const setUniqueUserTokenCookie = (res, token) => {
   // Set the user token as a cookie
   const cookieOptions = {
-    //httpOnly: true, // Cookie is not accessible via JavaScript
+    httpOnly: true, // Cookie is not accessible via JavaScript
     secure: process.env.NODE_ENV === 'production', // Restrict cookie to secure (HTTPS) connections in production
     sameSite: 'strict', // Protect against cross-site request forgery (CSRF) attacks
     maxAge: 60 * 60 * 24 * 7, // Set the cookie expiration to 7 days (adjust as needed)
@@ -31,8 +31,9 @@ export function middleware(req) {
   }
 
   // Check if the user token cookie already exists
-  let userToken = req.cookies.userToken;
-
+  let userToken = req.cookies.get('userToken');
+  //console.log('userToken', userToken)
+  
   if (!userToken) {
     // If the user token cookie doesn't exist, create a new unique user token
     userToken = createUniqueUserToken();
@@ -43,6 +44,7 @@ export function middleware(req) {
     let res = setUniqueUserTokenCookie(response, userToken);
     return res;
   }
+
 
   // Attach the user token to the request for further use
   //req.userToken = userToken;

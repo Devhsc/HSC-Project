@@ -5,7 +5,6 @@ import path from "path";
 import fs from "fs/promises";
 
 //const upload = multer({ dest: 'uploads/' });
-let userToken = 'testUserToken';
 
 export const config = {
   api: {
@@ -13,10 +12,10 @@ export const config = {
   },
 };
 
-const readFile = (req, uploadDir, saveLocally = false) => {
+const readFile = (req, saveLocally = false) => {
   const options = {};
   if (saveLocally) {
-    options.uploadDir = uploadDir
+    options.uploadDir = path.join(process.cwd(), '/src', 'uploads','unprocessed');
     options.filename = (name, ext, path, form) => {
       return Date.now().toString() + '_' + path.originalFilename;
     };
@@ -31,40 +30,16 @@ const readFile = (req, uploadDir, saveLocally = false) => {
   });
 };
 
-const test = async () => {
-  console.log(userToken)
-
-}
-
-
 const handler = async (req, res) => {
   try {
-    userToken = req.cookies['userToken'];
-    if (!userToken){ //hassan replace this with a check against a database
-      res.status(401).json({ error: 'Unauthorized' });
-      return;
-    }
-    const userTokenPath = path.join(process.cwd(), 'src', 'uploads', 'unprocessed', userToken);
-    
-    try {
-      await fs.stat(userTokenPath); //check if the userTokenPath exists
-    } catch {
-      console.log('creating path')
-      await fs.mkdir(userTokenPath);
-    }
-
-    //await fs.readdir(userTokenPath);
-    await readFile(req, userTokenPath, true);
-    res.json({ done: 'ok' });
-
+    await fs.readdir(path.join(process.cwd() + '/src', 'uploads', 'unprocessed'));
   } catch (error) {
-    console.error(error)
+    await fs.mkdir(path.join(process.cwd() + '/src', 'uploads', 'unprocessed'));
   }
-
-  test()
-
-
-
+  await readFile(req, true);
+  res.json({ done: 'ok' });
 };
+
+
 
 export default handler;
