@@ -63,8 +63,6 @@ const handler = async (req, res) => {
 
   test()
 
-
-
 };
 
 export default handler;

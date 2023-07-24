@@ -13,16 +13,20 @@
   }
 }
 
-.text {
+.window {
+  background-color: $background-color;
+}
+
+.header { 
   @include responsive-title(50px);
-  color: $color-primary;
   font-weight: bold;
   --font-family-primary: 'Roboto Mono', monospace;
   --font-family-secondary: 'Rubik Mono One', sans-serif;
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  //position: absolute;
+  //top: 10%;
+  //left: 50%;
+  //transform: translate(-50%, -50%);
+  padding: 20px;
   text-align: center;
   background-clip: text;
   -webkit-background-clip: text;
@@ -30,30 +34,45 @@
   background-image: linear-gradient(to right, $gradient-color-a, $gradient-color-b);
 }
 
+.mainPdfView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh; /* Set the height to 100% of the viewport height */
+  width: 100vw; /* Set the width to 100% of the viewport width */
+  margin: 0; /* Remove any margin to ensure full coverage */
+  padding: 0; /* Remove any padding to ensure full coverage */
+}
+
+.pdfIframe {
+  width: 80vw; /* Adjust this value as needed */
+  height: 100%; /* Set the height to 100% to fill the available height */
+  border: 15px outset; /* Remove the border of the iframe */
+}
 
 .body {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
-    height: 100vh;
-    background-color: #f5f5f5;
+    height: 80vh;
     width: 100%; /* Set a wider width, adjust as needed */
     margin: 10 auto; /* Center the body horizontally */
 
   }
 
 
-.underline {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  border-radius: 10px;
-  opacity: 0.1;
-  background-image: linear-gradient(to right, $gradient-color-a, $gradient-color-b);
-}
+// .underline {
+//   position: absolute;
+//   bottom: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 5px;
+//   border-radius: 10px;
+//   opacity: 0.1;
+//   background-image: linear-gradient(to right, $gradient-color-a, $gradient-color-b);
+// }
 
 .gradientL {
     background-image: linear-gradient(to right, rgba($gradient-color-a, $opacity-l), rgba($gradient-color-b, $opacity-l));

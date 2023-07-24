@@ -24,9 +24,9 @@ const setUniqueUserTokenCookie = (res, token) => {
 export function middleware(req) {
   //console.log('request', req.nextUrl.pathname)
 
-  // Only want to run this middleware if an API route is called (e.g., upload)
-  if (req.nextUrl.pathname.startsWith('/api/upload')) {
-    console.log('API route called');
+  // Only want to run this middleware if the inex route is called
+  if (req.nextUrl.pathname === '/') {
+    console.log('home route called');
     return NextResponse.next();
   }
 
@@ -51,4 +51,3 @@ export function middleware(req) {
 
   // Call the Next.js handler
 }
-
