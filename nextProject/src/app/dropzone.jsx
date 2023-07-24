@@ -89,26 +89,24 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
             formData.append('file', file);
         
             try {
-                const response = await axios.post('./api/upload', formData, {
-                    headers: {'Content-Type': 'multipart/form-data',},
-                    onUploadProgress: (progressEvent) => {
-                        console.log(progressEvent)
-                        const progressPercentage = Math.round(progressEvent.progress * 100);
-                        setProgress(progressPercentage);
-                    },
-                    ...requestConfig,
-                  } 
-                );
-            
-                // Handle the response from the server, e.g., display a success message
-                console.log(response.data);
-            
-                // Update the file object with uploaded status
-                file.uploaded = true;
+              const response = await post('./api/upload', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+                ...requestConfig,
+              });
+        
+              if (!response.ok) {
+                throw new Error('Upload failed');
+              }
+        
+              // Rest of the code remains the same...
             } catch (error) {
-                // Handle errors, e.g., display an error message
-                console.error(error);
-                return
+              // Handle errors, e.g., display an error message
+              console.error(error);
+              return;
             }
     
         }
