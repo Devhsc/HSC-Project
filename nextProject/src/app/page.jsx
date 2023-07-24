@@ -5,7 +5,7 @@ import home from '@styles/home.module.scss'
 import Dropzone from '@app/dropzone'
 import AcceptedFiles from '@app/acceptedFiles'
 import UploadProgress from '@app/uploadProgress'
-import DisplayPdf from '@app/DisplayPDF'
+
 
 import React, { useState, useEffect } from 'react';
 
