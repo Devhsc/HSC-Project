@@ -4,6 +4,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/solid'
 
+const requestConfig = {
+  // Increase the timeout to 60 seconds (or any other suitable value)
+  timeout: 60000, // 60,000 milliseconds = 60 seconds
+};
+
 const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFURL, setDisplayPDF}) => {
   const [rejected, setRejected] = useState([])
 
@@ -85,15 +90,15 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
         
             try {
                 const response = await axios.post('./api/upload', formData, {
-                    headers: {
-                    'Content-Type': 'multipart/form-data',
-                    },
+                    headers: {'Content-Type': 'multipart/form-data',},
                     onUploadProgress: (progressEvent) => {
                         console.log(progressEvent)
                         const progressPercentage = Math.round(progressEvent.progress * 100);
                         setProgress(progressPercentage);
-                    }
-                });
+                    },
+                    ...requestConfig,
+                  } 
+                );
             
                 // Handle the response from the server, e.g., display a success message
                 console.log(response.data);
