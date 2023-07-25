@@ -8,7 +8,7 @@ const AcceptedFilesWindow = ({ className, files, removeFile }) => {
             Accepted Files
             </h3>
                 <div className='overflow-auto'>
-                <hr className={`mt-1 ${className.underline}`} />
+                {/* <hr className={`mt-1 ${className.underline}`} /> */}
                 <ul className='mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
                 {files.map(file => (
                     <li key={file.key} className='relative h-32 w-32 rounded-md shadow-lg'>

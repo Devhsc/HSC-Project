@@ -5,6 +5,7 @@ import home from '@styles/home.module.scss'
 import Dropzone from '@app/dropzone'
 import AcceptedFiles from '@app/acceptedFiles'
 import UploadProgress from '@app/uploadProgress'
+import SetConditions from '@app/setConditions'
 
 
 import React, { useState, useEffect } from 'react';
@@ -28,15 +29,18 @@ const Home = () => {
   return (
     <section className="">
       <div className={home.window}>
-        <h1 className={home.header}>HSC Pastpaper Wizard</h1>
+        <h1 className={home.header}> Auto Q Exam Papers </h1>
         {/* Conditional rendering for mainPdfView */}
-        {displayPDF && (
+        {pdfURL !== 'none' && displayPDF && (
           <div className={home.mainPdfView}>
             <iframe src={pdfURL} className={home.pdfIframe}></iframe>
           </div>
         )}
         <div className={home.body}>
-          <UploadProgress progress={progress}/>
+          {/* <UploadProgress progress={progress}/> */}
+          <div className={home.SetConditions}>
+            <SetConditions/>
+          </div>
           <div className={home.dropzone}>
             <Dropzone className={home} files={files} setFiles={setFiles} setProcess={setProcess} setProgress={setProgress} setPDFURL={setPDFURL} setDisplayPDF={setDisplayPDF}  />
           </div>

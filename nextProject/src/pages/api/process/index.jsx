@@ -15,7 +15,16 @@ export const config = {
   },
 };
 
-const processFiles = async (req, res, processDir, uploadDir, userToken) => {
+const clearDir = async (directory) => {
+  const filesInDirectory = await fs.readdir(directory);
+  if (filesInDirectory.length > 0) {
+    for (const file of filesInDirectory) {
+      await fs.unlink(path.join(directory, file));
+    }
+  }
+};
+
+const processFiles = async (req, res, processDir, uploadDir, userToken,  firstQuestionNumber, lastQuestionPage,) => {
   //processed file will be named as the name of the uploadDir's folder.pdf
   const pdfURL = `/${userToken}.pdf`;
 
@@ -23,9 +32,12 @@ const processFiles = async (req, res, processDir, uploadDir, userToken) => {
     let exitCode = 1;
 
     const pythonProcess = spawn('python3', [
-      path.join(process.cwd(), 'src', 'scripts', 'pdfMerger.py'),
-      processDir,
-      uploadDir,
+      path.join(process.cwd(), 'src', 'scripts', 'environment', 'main.py'),
+      '2020_hsc.pdf',
+      firstQuestionNumber,
+      lastQuestionPage,
+      //processDir,
+      //uploadDir,
     ]);
 
     pythonProcess.stdout.on('data', (data) => {
@@ -52,9 +64,11 @@ const processFiles = async (req, res, processDir, uploadDir, userToken) => {
             // res.send(processedFile);
             // //const fileStream = fs.createReadStream(pdfURL);
             // //fileStream.pipe(res);
-
-            res.json({ pdfURL });
-            return pdfURL;
+            const timestamp = Date.now();
+            const unqiuePDFURL = `${pdfURL}?t=${timestamp}`;
+            
+            res.json({ pdfURL: unqiuePDFURL });
+            return unqiuePDFURL;
 
           })
           .catch((error) => {
@@ -83,20 +97,21 @@ const handler = async (req, res) => {
       return;
     }
 
-    const processDir = path.join(process.cwd(), 'src', 'uploads', 'unprocessed', userToken);
+    const lastQuestionPage = req.cookies['lastQuestionPage']
+    const firstQuestionNumber = req.cookies['firstQuestionNumber']
+
+    console.log("lastQuestionPage: " + lastQuestionPage)
+    console.log("firstQuestionNumber: " + firstQuestionNumber)
+
+
+    const processDir = path.join(process.cwd(), 'src', 'uploads', 'unprocessed', userToken, 'lol');
     //const uploadDir = path.join(process.cwd(), 'src', 'uploads', 'processed', userToken);
     const uploadDir = path.join(process.cwd(), 'public');
-    
-    try {
-      await fs.stat(uploadDir); //check if the userTokenPath exists
-    } catch {
-      console.log('creating path')
-      await fs.mkdir(uploadDir);
-    }
 
-    //await fs.readdir(userTokenPath);
-    // Process the files and get the PDF URL
-    const pdfURL = await processFiles(req, res, processDir, uploadDir, userToken);
+
+    const unqiuePDFURL = await processFiles(req, res, processDir, uploadDir, userToken, firstQuestionNumber, lastQuestionPage);
+
+    //await clearDir(processDir);
 
   } catch (error) {
     console.error(error)

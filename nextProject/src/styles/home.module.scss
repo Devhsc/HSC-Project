@@ -39,7 +39,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 60vh; /* Set the height to 100% of the viewport height */
+  height: 100vh; /* Set the height to 100% of the viewport height */
   width: 100vw; /* Set the width to 100% of the viewport width */
   margin: 0; /* Remove any margin to ensure full coverage */
   padding: 0; /* Remove any padding to ensure full coverage */
@@ -49,6 +49,18 @@
   width: 80vw; /* Adjust this value as needed */
   height: 100%; /* Set the height to 100% to fill the available height */
   border: 15px outset; /* Remove the border of the iframe */
+}
+
+.SetConditions{
+  padding-top: 10%;
+  padding-bottom: 1%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  height: 100vh;
+  width: 100%; /* Set a wider width, adjust as needed */
+  margin: 20 auto; /* Center the body horizontally */
 }
 
 .body {

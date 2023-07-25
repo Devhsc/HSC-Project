@@ -26,7 +26,7 @@ export function middleware(req) {
 
   // Only want to run this middleware if the inex route is called
   if (req.nextUrl.pathname === '/') {
-    console.log('home route called');
+    //console.log('home route called');
     return NextResponse.next();
   }
 

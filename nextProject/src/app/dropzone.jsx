@@ -89,25 +89,27 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
             formData.append('file', file);
         
             try {
-              const response = await post('./api/upload', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-                ...requestConfig,
-              });
-        
-              if (!response.ok) {
-                throw new Error('Upload failed');
-              }
-        
-              // Rest of the code remains the same...
-            } catch (error) {
+              const response = await axios.post('./api/upload', formData, {
+                  headers: {'Content-Type': 'multipart/form-data',},
+                  onUploadProgress: (progressEvent) => {
+                      console.log(progressEvent)
+                      const progressPercentage = Math.round(progressEvent.progress * 100);
+                      setProgress(progressPercentage);
+                  },
+                  ...requestConfig,
+                } 
+              );
+
+              // Handle the response from the server, e.g., display a success message
+              console.log(response.data);
+
+              // Update the file object with uploaded status
+              file.uploaded = true;
+          } catch (error) {
               // Handle errors, e.g., display an error message
               console.error(error);
-              return;
-            }
+              return
+          }
     
         }
 
@@ -116,6 +118,7 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
   async function process () {
 
     setProcess('processing')
+    
     try {
       const response = await fetch('/api/process');
       if (response.ok) {
@@ -131,14 +134,19 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
     }
   };
 
-async function action() {
+async function uploadAction() {
 
   setDisplayPDF(false);
   upload().then(() => {
-    process(); // Call process after the upload is completed successfully
-    setDisplayPDF(true);
+    // process(); // Call process after the upload is completed successfully
+    // setDisplayPDF(true);
   });
 
+}
+
+async function processAction(){
+  process(); // Call process after the upload is completed successfully
+  setDisplayPDF(true);
 }
       
 
@@ -146,7 +154,7 @@ async function action() {
     <form>
       <div
         {...getRootProps({
-            className: ` ${className.gradientL} flex items-center justify-center gap-4 rounded-lg border-solid hover:animate-pulse hover:border-dashed border-2 border-violet-200 p-8`
+            className: ` ${className.gradientL} flex items-center justify-center gap-4 rounded-lg border-solid hover:animate-pulse hover:border-dashed border-2 border-violet-200 p-16`
         })}
       >
         <input {...getInputProps({ name: 'file' })} />
@@ -175,10 +183,17 @@ async function action() {
           </button>
           <button
             type='button'
-            onClick={() => action()}
+            onClick={() => uploadAction()}
             className='ml-auto mt-1 rounded-md border border-purple-400 px-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-purple-400 hover:text-white'
           >
             Upload
+          </button>
+          <button
+            type='button'
+            onClick={() => processAction()}
+            className='ml-auto mt-1 rounded-md border border-blue-400 px-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-purple-400 hover:text-white'
+          >
+            process
           </button>
         </div>
 
