@@ -18,18 +18,24 @@ const readFile = (req, uploadDir, saveLocally = false) => {
   if (saveLocally) {
     options.uploadDir = uploadDir
     options.filename = (name, ext, path, form) => {
-      return Date.now().toString() + '_' + path.originalFilename;
+      
+      //return Date.now().toString() + '_' + path.originalFilename; //moved to user side
+      //return key;
+      return path.originalFilename;
+      
     };
   }
   options.maxFileSize = 4000 * 1024 * 1024;
   const form = formidable(options);
   return new Promise((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
+      //console.log(fields.key)
+
       if (err) reject(err);
       resolve({ fields, files });
     });
   });
-};
+}
 
 const test = async () => {
   console.log(userToken)

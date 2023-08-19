@@ -1,6 +1,6 @@
-16 NULL mark,consider,question,triangle,scale,show,se
-16a NULL si,correct,jon,og,value,near,degree
-16b NULL write,ul,decimal,m,eo,line,b,mark,office,x,correct,place,use,eaae,sy,value
-17 NULL ayla,m,measure,block,office,number,base,estimate,entire,land,use,turn,write,line,mark,question,square,count,find,area,wish,tree,section
-18 NULL represent,si,weight,mark,network,diagram,edge,question,se
-18a NULL m,eo,space,office,page,eaae,determine,network,use,sy,draw,write,ul,span,length,line,mark,question,jon,og,si,minimum,continue,tree
+16 NULL consider,scale,triangle,question,show,se,mark
+16a NULL value,jon,degree,correct,og,si,near
+16b NULL value,line,x,b,place,sy,office,use,eo,m,correct,write,eaae,ul,decimal,mark
+17 NULL count,number,land,use,turn,question,write,entire,mark,line,square,office,measure,ayla,block,estimate,base,m,tree,area,find,wish,section
+18 NULL weight,represent,question,edge,se,si,network,diagram,mark
+18a NULL space,jon,continue,draw,eaae,ul,network,length,use,question,write,eo,mark,line,office,page,og,span,m,tree,sy,minimum,determine,si

@@ -1,7 +1,13 @@
 import React from 'react';
 import { ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/solid'
 
-const AcceptedFilesWindow = ({ className, files, removeFile }) => {
+const AcceptedFilesWindow = ({ className, files, removeFile, setSelectedFile, setShowConditions}) => {
+
+const setFile = (File) => {
+    setSelectedFile(File);
+    setShowConditions(true);
+    }
+
   return (
         <div className='mt-6'>
             <h3 className='title mt-10 border-b pb-3 text-lg font-semibold text-stone-600 text-center'>
@@ -12,8 +18,9 @@ const AcceptedFilesWindow = ({ className, files, removeFile }) => {
                 <ul className='mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
                 {files.map(file => (
                     <li key={file.key} className='relative h-32 w-32 rounded-md shadow-lg'>
-                        <div className='h-full w-full rounded-md object-contain'>
-                            <iframe src={`${file.preview}#page=1`} width="100%" height="600px"></iframe>
+                        <div className='h-full w-full rounded-md object-contain'onClick={() => setFile(file)}>
+                        <button>edit</button>
+                            <iframe src={`${file.preview}#page=1`} width="100%" height="600px" ></iframe>
                         </div>
                     <button
                         type='button'

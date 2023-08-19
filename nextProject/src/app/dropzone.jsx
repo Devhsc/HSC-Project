@@ -9,12 +9,11 @@ const requestConfig = {
   timeout: 60000, // 60,000 milliseconds = 60 seconds
 };
 
-const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFURL, setDisplayPDF}) => {
+const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFURL, setDisplayPDF ,setSelectedFile, setShowConditions}) => {
   const [rejected, setRejected] = useState([])
+  
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-
-    console.log(acceptedFiles)
 
     if (acceptedFiles?.length) {
         setFiles(previousFiles => [
@@ -30,10 +29,15 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
             Object.assign(file, {
               preview: URL.createObjectURL(file),
               uploaded: false, // Set the initial value of the uploaded property to false
-              key: Date.now().toString() + file.name
+              key: Date.now().toString() + "_" + file.name,
+              firstQuestionNumber: 16,
+              lastQuestionPage: 10,
             })
           )
         ]);
+        setSelectedFile(acceptedFiles[0]);
+        setShowConditions(true);
+
       }
 
     if (rejectedFiles?.length) {
@@ -86,7 +90,8 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
         
             // Create a new FormData instance for each file
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('file', file, file.key); //rename the file to have a unique name (to allow duplicate file names)
+            formData.append('key', file.key);
         
             try {
               const response = await axios.post('./api/upload', formData, {

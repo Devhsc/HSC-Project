@@ -1,11 +1,13 @@
 'use client'
 import '@styles/globals.scss'
 import home from '@styles/home.module.scss'
+import popup from '@styles/popup.module.scss'
+
 //import UploadForm from '@app/uploadForm'
 import Dropzone from '@app/dropzone'
 import AcceptedFiles from '@app/acceptedFiles'
 import UploadProgress from '@app/uploadProgress'
-import SetConditions from '@app/setConditions'
+import Conditions from '@app/conditions'
 
 
 import React, { useState, useEffect } from 'react';
@@ -18,6 +20,8 @@ const Home = () => {
   const [progress, setProgress] = useState(0);
   const [pdfURL, setPDFURL] = useState('none')
   const [displayPDF, setDisplayPDF] = useState(false)
+  const [showConditions, setShowConditions] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null); // New state for selected file
   
 
   const removeFile = (key) => {
@@ -36,16 +40,18 @@ const Home = () => {
             <iframe src={pdfURL} className={home.pdfIframe}></iframe>
           </div>
         )}
+        {showConditions == true && (
+          <div className={popup.popup}>
+            <Conditions className={popup.content} selectedFile={selectedFile} setShowConditions={setShowConditions} />
+          </div>
+        )}
         <div className={home.body}>
           {/* <UploadProgress progress={progress}/> */}
-          <div className={home.SetConditions}>
-            <SetConditions/>
-          </div>
           <div className={home.dropzone}>
-            <Dropzone className={home} files={files} setFiles={setFiles} setProcess={setProcess} setProgress={setProgress} setPDFURL={setPDFURL} setDisplayPDF={setDisplayPDF}  />
+            <Dropzone className={home} files={files} setFiles={setFiles} setProcess={setProcess} setProgress={setProgress} setPDFURL={setPDFURL} setDisplayPDF={setDisplayPDF} setSelectedFile={setSelectedFile} setShowConditions={setShowConditions} />
           </div>
           <div className={home.acceptedFiles}>
-            <AcceptedFiles className={home} files={files} removeFile={removeFile} />
+            <AcceptedFiles className={home} files={files} removeFile={removeFile} setSelectedFile={setSelectedFile} setShowConditions={setShowConditions}/>
           </div>
         </div>
       </div>
