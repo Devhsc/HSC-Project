@@ -82,7 +82,7 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
 
     //uploading
     setProcess('uploading')
-    console.log(files)
+    console.log("files:",files)
     for (const file of files) {
         // Skip files that have already been uploaded
         if (file.uploaded){

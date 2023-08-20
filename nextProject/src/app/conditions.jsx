@@ -1,3 +1,4 @@
+import { FunnelIcon } from '@heroicons/react/24/solid';
 import React, { useState, useEffect } from 'react';
 
 const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, setFiles }) => {
@@ -13,19 +14,24 @@ const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, s
 
   useEffect(() => {
 
+    //console.log(updatedSelectedFile);
+    console.log(files);
+
+  }, [conditionsObj]);
+
+  function onButton() {
+
     const updatedSelectedFile = {
       ...selectedFile,
       firstQuestionNumber: conditionsObj.firstQuestionNumber,
       lastQuestionPage: conditionsObj.lastQuestionPage,
     };
     
-    //console.log(updatedSelectedFile);
-    console.log(files);
+
+    setShowConditions(false)
     updateFile(files,updatedSelectedFile);
     setSelectedFile(updatedSelectedFile); // Assuming you have a `setSelectedFile` function in your state.
-
-  }, [conditionsObj]);
-
+  }
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
@@ -36,18 +42,27 @@ const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, s
 
   };
 
-  const updateFile = (files, updatedFile) => { //replaces the old file with the new file object made here 
-
-    const indexToUpdate = files.findIndex(file => file.key === updatedFile.key);
+  const updateFile = (files, updatedFile) => {
+    const indexToUpdate = files.findIndex((file) => file.key === updatedFile.key);
   
-
     if (indexToUpdate !== -1) {
-      const updatedFiles = [...files]; 
-      updatedFiles[indexToUpdate] = updatedFile;
+
+      // const updatedFiles = [...files];
+      // const fileToUpdate = updatedFiles[indexToUpdate];
   
-      setFiles(updatedFiles);
+      // // Update the properties of the existing file object
+      // fileToUpdate.firstQuestionNumber = updatedFile.firstQuestionNumber;
+      // fileToUpdate.lastQuestionPage = updatedFile.lastQuestionPage;
+  
+      // // Set the state with the updated files array
+      // setFiles(updatedFiles);
+
+      const fileToUpdate = files[indexToUpdate]
+      fileToUpdate.firstQuestionNumber = updatedFile.firstQuestionNumber
+      fileToUpdate.lastQuestionPage = updatedFile.lastQuestionPage
+
     }
-      return files;
+    return files;
   };
 
 
@@ -60,7 +75,7 @@ const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, s
             type="number"
             id="firstQuestionNumber"
             name="firstQuestionNumber"
-            value={selectedFile.firstQuestionNumber}
+            value={conditionsObj.firstQuestionNumber}
             onChange={handleInputChange}
             className="w-full px-4 py-2 border rounded-md"
             />
@@ -71,7 +86,7 @@ const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, s
             type="number"
             id="lastQuestionPage"
             name="lastQuestionPage"
-            value={selectedFile.lastQuestionPage}
+            value={conditionsObj.lastQuestionPage}
             onChange={handleInputChange}
             className="w-full px-4 py-2 border rounded-md"
             />
@@ -79,7 +94,7 @@ const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, s
 
         <div>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => setShowConditions(false)}>OK</button>
+            onClick={ onButton }>OK</button>
         </div>
         
         <div className="pdf-frame">
