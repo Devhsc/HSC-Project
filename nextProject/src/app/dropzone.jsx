@@ -1,5 +1,6 @@
 'use client'
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/solid'
@@ -75,69 +76,80 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
 
   async function upload () {
 
-        //console.log(files)
-        if (files.length == 0) return
+    let args = ""
+    //console.log(files)
+    if (files.length == 0) return
 
-        //uploading
-        setProcess('uploading')
-
-        for (const file of files) {
-            // Skip files that have already been uploaded
-            if (file.uploaded){
-                alert('already uploaded, please wait for the server to process the files')
-                return
-            }
-        
-            // Create a new FormData instance for each file
-            const formData = new FormData();
-            formData.append('file', file, file.key); //rename the file to have a unique name (to allow duplicate file names)
-            formData.append('key', file.key);
-        
-            try {
-              const response = await axios.post('./api/upload', formData, {
-                  headers: {'Content-Type': 'multipart/form-data',},
-                  onUploadProgress: (progressEvent) => {
-                      console.log(progressEvent)
-                      const progressPercentage = Math.round(progressEvent.progress * 100);
-                      setProgress(progressPercentage);
-                  },
-                  ...requestConfig,
-                } 
-              );
-
-              // Handle the response from the server, e.g., display a success message
-              console.log(response.data);
-
-              // Update the file object with uploaded status
-              file.uploaded = true;
-          } catch (error) {
-              // Handle errors, e.g., display an error message
-              console.error(error);
-              return
-          }
-    
+    //uploading
+    setProcess('uploading')
+    console.log(files)
+    for (const file of files) {
+        // Skip files that have already been uploaded
+        if (file.uploaded){
+            alert('already uploaded, please wait for the server to process the files')
+            return
         }
+    
+        // Create a new FormData instance for each file
+        const formData = new FormData();
+        //formData.append('file', file);
+        formData.append('file', file, file.key); //rename the file to have a unique name (to allow duplicate file names)
+        formData.append('key', file.key);
+    
+        try {
+          const response = await axios.post('./api/upload', formData, {
+              headers: {'Content-Type': 'multipart/form-data',},
+              onUploadProgress: (progressEvent) => {
+                  console.log(progressEvent)
+                  const progressPercentage = Math.round(progressEvent.progress * 100);
+                  setProgress(progressPercentage);
+              },
+              ...requestConfig,
+            } 
+          );
 
+          // Handle the response from the server, e.g., display a success message
+          console.log(response.data);
+
+          // Update the file object with uploaded status
+          file.uploaded = true;
+      } catch (error) {
+          // Handle errors, e.g., display an error message
+          console.error(error);
+          return
+      }
+
+      args = args + file.key + " " + file.firstQuestionNumber + " " + file.lastQuestionPage + " "
+
+    }
+    
+    
+}
+
+async function process (args) {
+
+  setProcess('processing')
+
+  console.log(args);
+
+  Cookies.set('args', args, { expires: 1, path: '/' });
+  
+  try {
+    const response = await fetch('/api/process');
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data.pdfURL);
+      setPDFURL(data.pdfURL);
+    } else {
+      // Handle other response statuses here
+      console.error('PDF processing failed');
+    }
+  } catch (error) {
+    console.error('PDF processing error:', error);
   }
 
-  async function process () {
 
-    setProcess('processing')
-    
-    try {
-      const response = await fetch('/api/process');
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data.pdfURL);
-        setPDFURL(data.pdfURL);
-      } else {
-        // Handle other response statuses here
-        console.error('PDF processing failed');
-      }
-    } catch (error) {
-      console.error('PDF processing error:', error);
-    }
-  };
+};
 
 async function uploadAction() {
 
@@ -150,7 +162,9 @@ async function uploadAction() {
 }
 
 async function processAction(){
-  process(); // Call process after the upload is completed successfully
+  setDisplayPDF(false);
+  const args = await upload() //arguments for runnin the python script
+  process(args); // Call process after the upload is completed successfully
   setDisplayPDF(true);
 }
       

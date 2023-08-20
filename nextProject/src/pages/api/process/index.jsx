@@ -90,6 +90,22 @@ const processFiles = async (req, res, processDir, uploadDir, userToken,  firstQu
 
 
 const handler = async (req, res) => {
+  let args = ""
+
+  const form = formidable();
+
+  new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      args = fields.body
+
+      if (err) reject(err);
+      resolve({ fields, files });
+    });
+  });
+
+  console.log(args)
+  
+
   try {
     const userToken = req.cookies['userToken'];
     if (!userToken){ //hassan replace this with a check against a database
@@ -97,19 +113,19 @@ const handler = async (req, res) => {
       return;
     }
 
-    const lastQuestionPage = req.cookies['lastQuestionPage']
-    const firstQuestionNumber = req.cookies['firstQuestionNumber']
+    //const lastQuestionPage = req.cookies['lastQuestionPage']
+    //const firstQuestionNumber = req.cookies['firstQuestionNumber']
 
-    console.log("lastQuestionPage: " + lastQuestionPage)
-    console.log("firstQuestionNumber: " + firstQuestionNumber)
+    //console.log("lastQuestionPage: " + lastQuestionPage)
+    //console.log("firstQuestionNumber: " + firstQuestionNumber)
 
 
-    const processDir = path.join(process.cwd(), 'src', 'uploads', 'unprocessed', userToken, 'lol');
+    const processDir = path.join(process.cwd(), 'src', 'uploads', 'unprocessed', userToken);
     //const uploadDir = path.join(process.cwd(), 'src', 'uploads', 'processed', userToken);
     const uploadDir = path.join(process.cwd(), 'public');
 
 
-    const unqiuePDFURL = await processFiles(req, res, processDir, uploadDir, userToken, firstQuestionNumber, lastQuestionPage);
+    //const unqiuePDFURL = await processFiles(req, res, processDir, uploadDir, userToken, args);
 
     //await clearDir(processDir);
 

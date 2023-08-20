@@ -1,21 +1,30 @@
-import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 
-const Conditions = ({ selectedFile, setShowConditions }) => {
+const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, setFiles }) => {
+  
+  
     const defaultConditionsObj = {
-        firstQuestionNumber: 16,
-        lastQuestionPage: 10,
+      firstQuestionNumber: selectedFile.firstQuestionNumber,
+      lastQuestionPage: selectedFile.lastQuestionPage,
     };
     
   const [conditionsObj, setConditionsObj] = useState(defaultConditionsObj);
+  //const fileName = selectedFile ? selectedFile.name : '';
 
   useEffect(() => {
 
-    selectedFile.firstQuestionNumber = conditionsObj.firstQuestionNumber,
-    selectedFile.lastQuestionPage = conditionsObj.lastQuestionPage,
+    const updatedSelectedFile = {
+      ...selectedFile,
+      firstQuestionNumber: conditionsObj.firstQuestionNumber,
+      lastQuestionPage: conditionsObj.lastQuestionPage,
+    };
     
-    console.log(selectedFile);
-  }, [conditionsObj, selectedFile]);
+    //console.log(updatedSelectedFile);
+    console.log(files);
+    updateFile(files,updatedSelectedFile);
+    setSelectedFile(updatedSelectedFile); // Assuming you have a `setSelectedFile` function in your state.
+
+  }, [conditionsObj]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -27,10 +36,24 @@ const Conditions = ({ selectedFile, setShowConditions }) => {
 
   };
 
+  const updateFile = (files, updatedFile) => { //replaces the old file with the new file object made here 
+
+    const indexToUpdate = files.findIndex(file => file.key === updatedFile.key);
+  
+
+    if (indexToUpdate !== -1) {
+      const updatedFiles = [...files]; 
+      updatedFiles[indexToUpdate] = updatedFile;
+  
+      setFiles(updatedFiles);
+    }
+      return files;
+  };
+
 
   return (
     <div>
-      { selectedFile && ( <h1> {selectedFile.name} </h1> )}
+      { selectedFile && <h1>{selectedFile.name}</h1> }
         <div className="border rounded p-4 my-4">
             <label htmlFor="firstQuestionNumber" className="block mb-2">What is the first short response question number?</label>
             <input

@@ -42,7 +42,7 @@ const Home = () => {
         )}
         {showConditions == true && (
           <div className={popup.popup}>
-            <Conditions className={popup.content} selectedFile={selectedFile} setShowConditions={setShowConditions} />
+            <Conditions className={popup.content} selectedFile={selectedFile} setSelectedFile={setSelectedFile} setShowConditions={setShowConditions} files={files} setFiles={setFiles}/>
           </div>
         )}
         <div className={home.body}>
