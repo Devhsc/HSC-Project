@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { stringify } from 'querystring';
 
 const requestConfig = {
   // Increase the timeout to 60 seconds (or any other suitable value)
@@ -119,9 +120,12 @@ const Dropzone = ({ className, files, setFiles, setProcess, setProgress, setPDFU
           return
       }
 
+      console.log("fq",file.firstQuestionNumber)
+      console.log("lq",file.lastQuestionPage)
       args = args + file.key + " " + file.firstQuestionNumber + " " + file.lastQuestionPage + " "
-
     }
+    const encodedArgs = encodeURIComponent(args);
+    Cookies.set('args', encodedArgs, { expires: 1, path: '/' });
     
     
 }
@@ -131,8 +135,6 @@ async function process (args) {
   setProcess('processing')
 
   console.log(args);
-
-  Cookies.set('args', args, { expires: 1, path: '/' });
   
   try {
     const response = await fetch('/api/process');

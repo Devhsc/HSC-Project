@@ -62,7 +62,7 @@ const Conditions = ({ selectedFile, setSelectedFile, setShowConditions, files, s
       fileToUpdate.lastQuestionPage = updatedFile.lastQuestionPage
 
     }
-    return files;
+    //return files;
   };
 
 

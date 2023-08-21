@@ -24,20 +24,27 @@ const clearDir = async (directory) => {
   }
 };
 
-const processFiles = async (req, res, processDir, uploadDir, userToken,  firstQuestionNumber, lastQuestionPage,) => {
+const processFiles = async (req, res, processDir, uploadDir, userToken,  args) => {
   //processed file will be named as the name of the uploadDir's folder.pdf
   const pdfURL = `/${userToken}.pdf`;
 
   return new Promise((resolve, reject) => {
     let exitCode = 1;
 
+    const argArray = args.split(' ');
+    const length = Math.floor(argArray.length / 3) * 3;
+    const pythonArgs = argArray.slice(0, length);
+
+
+    for (let i = 0; i < pythonArgs.length - 1; i += 3) { //adding the full path to the files
+      pythonArgs[i] = path.join(processDir, pythonArgs[i]);
+    }
+
+    console.log(pythonArgs)
+
     const pythonProcess = spawn('python3', [
       path.join(process.cwd(), 'src', 'scripts', 'environment', 'main.py'),
-      '2020_hsc.pdf',
-      firstQuestionNumber,
-      lastQuestionPage,
-      //processDir,
-      //uploadDir,
+      ...pythonArgs,  // Spread the individual args as separate arguments
     ]);
 
     pythonProcess.stdout.on('data', (data) => {
@@ -113,6 +120,11 @@ const handler = async (req, res) => {
       return;
     }
 
+    const encodedArgs = req.cookies['args']
+    const decodedArgs = decodeURIComponent(encodedArgs);
+
+    console.log(decodedArgs)
+
     //const lastQuestionPage = req.cookies['lastQuestionPage']
     //const firstQuestionNumber = req.cookies['firstQuestionNumber']
 
@@ -125,7 +137,7 @@ const handler = async (req, res) => {
     const uploadDir = path.join(process.cwd(), 'public');
 
 
-    //const unqiuePDFURL = await processFiles(req, res, processDir, uploadDir, userToken, args);
+    const unqiuePDFURL = await processFiles(req, res, processDir, uploadDir, userToken, decodedArgs);
 
     //await clearDir(processDir);
 
