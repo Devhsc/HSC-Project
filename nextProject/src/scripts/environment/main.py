@@ -135,3 +135,4 @@ for dir in os.listdir('topic_sorted'):
         # doc[page_index].insert_image(filename='opacity_logo.png', rotate=90, rect=fitz.Rect(0,0,595,842))
 
 doc.save(f'/Users/bryden/Coding/Projects/HSC-Project/nextProject/public/{sys.argv[-1]}.pdf')
+doc.save(f'/Users/bryden/Coding/Projects/HSC-Project/nextProject/public/{sys.argv[-1]}.pdf')
