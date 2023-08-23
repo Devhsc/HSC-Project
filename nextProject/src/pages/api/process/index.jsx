@@ -45,6 +45,7 @@ const processFiles = async (req, res, processDir, uploadDir, userToken,  args) =
     const pythonProcess = spawn('python3', [
       path.join(process.cwd(), 'src', 'scripts', 'environment', 'main.py'),
       ...pythonArgs,  // Spread the individual args as separate arguments
+      userToken
     ]);
 
     pythonProcess.stdout.on('data', (data) => {
